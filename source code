@@ -1,0 +1,774 @@
+#include<iostream>
+#include<cstddef>
+#include<windows.h>
+#include<strings.h>
+#include<ctime>
+#include<sstream>
+#include<conio.h>
+#include<fstream>
+#include<chrono>
+#include<cstdlib>
+#include<dos.h>
+using namespace std;
+
+       string file,rollno,FormNo,formno;
+       fstream adout;
+       int clas,fno,content,year;
+   void choice();
+   //Function for checking rather user input string or int
+   bool check_Input(string str);
+   //convert uppercase to lower
+   string Upper_Lower(string s);
+   void gotoxy(int x, int y)
+{
+    COORD ord;
+    ord.X = x;
+    ord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), ord);
+}
+   //generate error on invalid input
+   void error();
+   //remove generated error when it's solved
+   void ErrorCorrection();
+   //show greeting at the end
+   void end();
+   //converts intger into string
+   string IntToStr(int n);
+
+//Box(header&Footer size,left&Right Boundary lenght
+//,starting location(column),Header x axis(row),
+//footer x axis(row),boundary x axis)
+void Box(int FH,int LR,int sl,int hr,int fr,int Bx)
+{
+	//c column
+	gotoxy(sl,hr);
+	//hx=17
+	//hr=30
+	//lx=18
+	for(int i=0;i<FH;i++)
+	cout<<"-";
+	gotoxy(sl,fr);
+	for(int i=0;i<FH;i++)
+	cout<<"-";
+	gotoxy(sl,Bx);
+	for(int i=0;i<LR;i++)
+	{
+	gotoxy(sl,Bx++);
+	cout<<"|\t\t\t\t\t |";
+    }
+}
+int Date()
+{
+    using std::chrono::system_clock;
+    
+    auto issue_date(std::chrono::system_clock::now());
+    auto due_date = issue_date + std::chrono::hours(24*14);
+    
+    std::time_t issue_date_o(system_clock::to_time_t(issue_date));
+    std::time_t due_date_o(system_clock::to_time_t(due_date));
+    
+    char mbstr[100];
+    if (std::strftime(mbstr, 100, "%d %B %Y", std::localtime(&issue_date_o)))
+        {
+		gotoxy(68,32);
+		cout << "Issued On: " << mbstr << '\n';
+}
+	if (std::strftime(mbstr, 100, "%d %B %Y", std::localtime(&due_date_o)))
+        {
+		gotoxy(68,33);
+		std::cout << "Due Date: "<< mbstr;
+        }
+        return 0;
+}
+int FeeSlip()
+{
+	system("cls");
+	Box(41,28,65,6,35,7);
+	int sp=21;
+	gotoxy(94,20);
+	cout<<"-----------";
+	gotoxy(98,21);
+	cout<<"Amount";
+	gotoxy(94,22);
+	cout<<"-----------";
+	for(int i=0;i<13;i++)
+	{
+	gotoxy(94,sp++);
+	cout<<"|";
+    }
+    gotoxy(94,33);
+	cout<<"-----------";
+	gotoxy(76,7);
+	cout<<"BecounHouse School"<<endl;
+	gotoxy(79,8);
+	cout<<"Student Slip";
+	fno++;
+	ifstream adin(rollno);
+	string cont;
+	int y=69;
+	int x=11;
+	gotoxy(y,x++);
+	getline(adin,cont);
+    cout<<cont;
+	gotoxy(y,x++);
+	getline(adin,cont);
+	cout<<cont;
+	gotoxy(y,x++);
+	getline(adin,cont);
+	cout<<cont;
+	getline(adin,cont);
+	gotoxy(y,x++);
+	getline(adin,cont);
+	cout<<cont;
+	gotoxy(y,x++);
+	cout<<"Registration.No:"<<formno;
+	gotoxy(y,x++);
+	cout<<"Class:"<<clas;
+		gotoxy(y,x+6);
+	cout<<"Admission Fee";
+			gotoxy(y,x+7);	
+	cout<<"Tution Fee";
+				gotoxy(y,x+13);	
+	cout<<"Total Fee";
+		gotoxy(97,23);
+	cout<<"1500/-";
+		gotoxy(97,24);
+	cout<<"5000/-";
+	gotoxy(97,30);
+	cout<<"6500/-";
+	Date();
+	gotoxy(150,39);
+	cout<<" ---- ";
+    gotoxy(150,40);
+    cout<<"|Exit|";
+    gotoxy(150,41);
+    cout<<" ---- ";
+        int u=5,w=1,key;
+    while(w<y)
+    {
+    	key=getch();
+    	if(key==13)
+    	{
+        end();
+		}
+		if(key==27)
+		{
+			system("cls");
+			choice();
+		}
+        
+    }
+    return 0;
+}
+int admform()
+{
+	fstream StdNo;
+	StdNo.open("CollegeStdNo.txt");
+	StdNo>>fno;
+	string yearr,gender,file,address,fcnic,cnic,contact,name,nationality,fname;
+	int DOB,classs,Day,Month,Length;
+	//changing color scheme of background and foreground
+	//code 7 is for white background
+	//code 0 is for black foreground
+	system("color 70");
+	//creating header 
+	cout<<"\n\n\n\n";
+	cout<<"\t\t\t\t";
+	for(int i=0;i<99;i++)
+	cout<<"-";
+	//drawing side Wallss
+	cout<<endl;
+	for(int i=1;i<=32;i++)
+	{
+		cout<<"\t\t\t\t|         \t\t\t\t\t\t\t\t\t                  |\n";
+	}
+	//creating footer
+	cout<<"\t\t\t\t";
+	for(int i=0;i<99;i++)
+	{
+	cout<<"-";
+    }
+   
+    /*using my gotoxy function to print on specific x and 
+    y axis*/
+
+    gotoxy(72,6);
+    cout<<"ADMISSION FORM";
+    gotoxy(110,8);
+    cout<<"FORM NO:"<<fno;
+    gotoxy(71,7);
+    cout<<"================";
+    gotoxy(40,12);
+    cout<<"Your Name:";
+    gotoxy(70,12);
+    cout<<"Father Name:";
+    gotoxy(100,12);
+    cout<<"Father CNIC:";
+    gotoxy(40,16);
+    cout<<"Date Of Birth";
+    {
+    	gotoxy(42,17);
+    	cout<<"Year:";
+    	gotoxy(53,17);
+    	cout<<"Month:";
+    	gotoxy(63,17);
+    	cout<<"Day:";
+	}
+    gotoxy(100,17);
+    cout<<"Contact No:";
+    gotoxy(40,22);
+    cout<<"Gender(M/F):";
+    gotoxy(100,22);
+    cout<<"Religion:";
+    //creating address box
+    gotoxy(45,26);
+    cout<<"         __________________________________________________";
+    gotoxy(45,27);
+    cout<<"Address:|";
+    gotoxy(104,27);
+    cout<<"|";
+    gotoxy(45,28);
+    cout<<"        |\t\t\t\t\t\t\t|";
+    gotoxy(45,29);
+    cout<<"        |\t\t\t\t\t\t\t|";
+    gotoxy(45,30);
+    cout<<"        |__________________________________________________|";
+	//getting input
+	rollno=IntToStr(year)+"c"+IntToStr(clas)+IntToStr(content)+".txt";
+	ofstream adout(rollno);
+	formno=IntToStr(year)+"c"+IntToStr(clas)+IntToStr(content);
+	backname:
+    gotoxy(50,12);
+    getline(cin,name);
+     if(check_Input(name))
+    {
+
+    	error();
+		goto backname;
+	}
+	else
+	{
+	    ErrorCorrection();
+    	goto Nextname;	
+	}
+	Nextname:
+
+    backFname:
+    gotoxy(82,12);
+    getline(cin,fname);
+    if(check_Input(fname))
+    {
+    	error();
+		goto backFname;
+	}
+	else
+	{
+    	ErrorCorrection();
+    	goto NextFname;
+	}
+	NextFname:
+
+    backCnic:
+	gotoxy(112,12);
+    getline(cin,fcnic);
+    Length=fcnic.length();
+    if(Length==13)
+    {
+    	ErrorCorrection();
+    	goto NextCNIC;
+	}
+	else
+	{
+		error();
+		goto backCnic;
+	}
+	NextCNIC:
+    backyear:
+    gotoxy(47,17);
+	cin>>yearr;
+    if(stoi(yearr)>=2005 && stoi(yearr)<=2019 && check_Input(yearr))
+    {
+    	ErrorCorrection();
+    	goto nextyear;
+	}
+	else
+	{
+		error();
+		goto backyear;
+	}
+	nextyear:
+	backMonth:
+	gotoxy(60,17);
+    cin>>Month;
+    if(Month>=1 && Month<=12)
+    {
+    	goto nextMonth;
+	}
+	else
+	{
+		goto backMonth;
+	}
+	nextMonth:
+    backDay:
+    gotoxy(67,17);
+    cin>>Day;
+    if(Day>=1 && Day <=30)
+    {
+    	goto nextDay;
+	}
+	else
+	{
+		goto backDay;
+	}
+	nextDay:
+
+    back:
+	gotoxy(111,17);
+    getline(cin,contact);
+    Length=contact.length();
+    if((Length==11 || Length==10)&&check_Input(contact) )
+    {
+    	ErrorCorrection();
+    
+    	goto next;
+	}
+	else
+	{
+		error;
+			
+		goto back;
+	}
+	next:
+    backgender:
+    gotoxy(52,22);
+    getline(cin,gender);
+    string gendr[4]={"m","f","M","F"};
+    for(int i=0;i<4;i++)
+    {
+    	if(gender==gendr[i])
+    	{
+    		break;
+		}
+		else
+		{
+			goto backgender;
+		}
+	}
+    backreligion:
+    gotoxy(109,22);
+    string religion;
+    getline(cin,religion);
+    if(check_Input(religion))
+    {
+    	error();
+		goto backreligion;
+	}
+	else
+	{
+    	ErrorCorrection();
+    	goto Nextreligion;
+	}
+	Nextreligion:
+    gotoxy(54,27);
+    getline(cin,address);
+        fno++;
+    StdNo<<fno;
+    adout<<"Student Name:"<<name<<endl;
+    adout<<"Father Name:"<<fname<<endl;
+    adout<<"Father CNIC:"<<fcnic<<endl;
+    adout<<"DOB:"<<yearr<<"-"<<Month<<"-"<<Day<<endl;
+    adout<<"Contact:"<<contact<<endl;
+    adout<<"Gender:"<<gender<<endl;
+    adout<<"Religion:"<<religion<<endl;
+    adout<<"Address:"<<address<<endl;
+    gotoxy(150,39);
+    cout<<" ----";
+    gotoxy(150,40);
+    cout<<"|Next|";
+    gotoxy(150,41);
+    cout<<" ----";
+	int y=5,w=1,key;
+    while(w<y)
+    {
+    	key=getch();
+    	if(key=13)
+    	{
+    	FeeSlip();
+        }
+        else if(key=='h' && key=='H')
+        {
+        	choice();
+		}
+	}
+	
+	
+	return 0;
+}
+int Search()
+{
+	int D;
+	system("color 70");
+	Box(41,12,65,17,30,18);
+	gotoxy(78,22);
+	cout<<"Enter Your Reg.No";
+	gotoxy(75,24);
+	cout<<"---------------------";
+	gotoxy(75,25);
+	cout<<"|   --   --   --    |";
+	gotoxy(75,26);
+	cout<<"|  |  | |c | |  |   |";
+	gotoxy(75,27);
+	cout<<"|   --   --   --    |";
+	gotoxy(75,28);
+	cout<<"---------------------";
+gotoxy(79,26);
+cin>>year;
+gotoxy(85,26);
+cin>>clas;
+gotoxy(89,26);
+cin>>content;
+system("cls");
+rollno=IntToStr(year)+"c"+IntToStr(clas)+IntToStr(content)+".txt";
+formno=IntToStr(year)+"c"+IntToStr(clas)+IntToStr(content);
+    int y=69;
+	int x=11 ;    
+  fstream file( rollno.c_str() );
+  if (!file)            
+    {
+    cout << "I could not open the file. Fooey.\n";
+    return EXIT_FAILURE;
+    }
+  else 
+    {
+    string line;
+    int count = 10;
+    while (count > 0)
+      {
+    getline( file, line );
+	gotoxy(y,x++);
+      cout << line << '\n';
+      count--;
+      }
+  }
+
+          Box(41,12,65,23,36,24);
+    gotoxy(80,27);
+    cout<<"  MODIFY"; 
+	gotoxy(80,32);
+	cout<<" REGENERATE";
+      bool loop = true;
+    while (loop) {
+        int key = getch();
+        //up key to select modify
+            if(key==72) {
+            system("cls");
+            y=69;
+			x=11;
+			string line;
+			D=2-1;
+		//showing stored data of student 
+		//when modify key is selected
+		fstream file( rollno);
+        while (!file.eof())
+        {
+            getline( file, line );
+	        gotoxy(y,x++);
+            cout << line << '\n';
+        }
+            int D=2-1;
+            Box(41,12,65,23,36,24);
+			gotoxy(79,25); 
+			cout<<"_____________";
+			gotoxy(80,27);
+            cout<<"  MODIFY";
+            gotoxy(79,28);
+			cout<<"_____________";
+			gotoxy(80,32);
+	        cout<<" REGENERATE";
+        }
+	    else if(key==13 && D==1)
+        {
+            system("cls");
+            fstream modify;
+            modify.open("modify.txt");
+            modify>>fno;
+            fno++;
+            int S=2-1;
+            modify<<fno;
+      	    admform();
+		}
+		else if(key==27)
+		{
+			system("cls");
+			choice();
+		} 
+
+        else  if(key==80)
+			{
+			system("cls");
+			            y=69;
+						x=11;
+						string line;
+ fstream file( rollno);
+            while (!file.eof())
+            {
+            getline( file, line );
+	        gotoxy(y,x++);
+            cout << line << '\n';
+      }
+            D=2+1;
+	        Box(41,12,65,23,36,24);
+			gotoxy(80,27);
+            cout<<"  MODIFY";
+            gotoxy(79,30);
+			cout<<"_____________";
+			gotoxy(80,32);
+	        cout<<" REGENERATE";
+	        gotoxy(79,33); 
+			cout<<"_____________";
+        }
+        	else if(key==13 && D==3)
+        {
+        	system("cls");
+        	FeeSlip();
+		} else if(key==27)
+		{
+			system("cls");
+			choice();
+		}
+        }
+		
+      
+	return 0;
+}
+
+int RollNo()
+{
+
+	back:
+	system("cls");
+	Box(41,12,65,17,30,18);
+	gotoxy(72,18);
+	cout<<"Fill It Carefully";
+	gotoxy(69,20);
+	cout<<"Appliying Class";
+	gotoxy(72,22);
+	cout<<"Class:";
+	gotoxy(75,23);
+	cout<<"example. class:5";
+	year=23;
+    gotoxy(80,22);
+	cin>>clas;
+	if(clas>=1 && clas<=8)
+	{
+		ErrorCorrection();
+		goto next;
+	}
+	else
+	{
+		
+        error();
+		goto back;
+	}
+	next:
+	string file1;
+	file1="class"+IntToStr(clas)+".txt";
+	ifstream Roll(file1);
+	Roll>>content;
+	if(clas<=8)
+	{
+	    file1="class"+IntToStr(clas)+".txt";
+		ofstream Roll(file1);
+	    content++;	
+		Roll<<content;
+	}
+	FormNo="CollegeStdNo.txt";
+	string rollno;
+    rollno=IntToStr(year)+"c"+IntToStr(clas)+IntToStr(content)+".txt";
+	//formno=IntToStr(year)+"c"+IntToStr(clas)+IntToStr(content);
+    int S=2+1;
+	gotoxy(150,39);
+	cout<<" ----";
+    gotoxy(150,40);
+    cout<<"|SAVE|";
+    gotoxy(150,41);
+    cout<<" ----";
+    int y=5,w=1,key;
+    while(w<y)
+    {
+    	key=getch();
+    	if(key=13)
+    	{
+		system("cls");
+    	admform();
+        }
+
+    }
+
+return 0;
+}
+void choice()
+{
+
+int D;
+    Box(41,12,65,17,30,18);
+    system("color 70");
+    int i=25,j=27;
+	//login page
+
+	int key;
+    gotoxy(80,22);
+    cout<<"NEW STUDENT"; 
+	gotoxy(80,27);
+	cout<<"OLD STUDENT";
+  	
+
+	bool loop = true;
+    while (loop) {
+        int key = getch();
+            if(key==72) {
+            system("cls");
+            D=2-1;
+            Box(41,12,65,17,30,18);
+			gotoxy(79,20); 
+			cout<<"_____________";
+			gotoxy(80,22);
+            cout<<"NEW STUDENT"; 
+            gotoxy(79,23);
+			cout<<"_____________";
+			gotoxy(80,27);
+	        cout<<"OLD STUDENT";
+
+
+		}
+	    else if(key==13 && D==1)
+        {
+        	system("cls");
+        	RollNo();
+		} 
+
+        else  if(key==80)
+			{
+			system("cls");
+            D=2+1;
+	        Box(41,12,65,17,30,18);
+			gotoxy(80,22);
+            cout<<"NEW STUDENT"; 
+            gotoxy(79,25);
+			cout<<"_____________";
+			gotoxy(80,27);
+	        cout<<"OLD STUDENT";
+	        gotoxy(79,28); 
+			cout<<"_____________";
+        }
+        	else if(key==13 && D==3)
+        {
+        	system("cls");
+        	Search();
+		} 
+}
+}
+
+int main()
+{   
+ Box(41,12,65,17,30,18);
+ system("color 70");
+ gotoxy(72,19);
+ cout<<"User Name";
+  gotoxy(72,24);
+  cout<<"Password";
+  
+ 
+ 			gotoxy(72,20); 
+			cout<<"____________________________"; 
+			gotoxy(71,21);
+			cout<<"|                            |";
+			gotoxy(71,22);
+			cout<<"|                            |";
+            gotoxy(71,23);
+			cout<<"|____________________________|";
+            gotoxy(79,25);
+			cout<<"_____________";
+			gotoxy(78,26);
+			cout<<"|             |";
+		    gotoxy(78,27);
+			cout<<"|             |";
+	        gotoxy(78,28); 
+			cout<<"|_____________|";
+ fstream pwd;
+ int x;
+ x=0;
+ string content[2],login,password;
+ pwd.open("password.txt");
+ while(!pwd.eof())
+ {
+ getline(pwd,content[x]);
+ x++;
+}
+    back:
+    	gotoxy(74,22);
+    getline(cin,login);
+    if(login==content[0])
+    {
+    	    ErrorCorrection();
+ 	back1:
+ 		gotoxy(80,27);
+    getline(cin,password);
+    if(password==content[1])
+    {
+    	system("cls");
+    choice(); 
+    }
+    else
+    {
+    	error();
+	goto back1;
+    }
+    }
+    else
+    {
+ 	error();
+ 	cout<<"\a";
+ 	goto back;
+    }
+return 0;
+}
+//Function for checking rather user input string or int
+bool check_Input(string str) 
+{
+   for (int i = 0; i < str.length(); i++)
+   if (isdigit(str[i]) == false)
+      return false;
+      return true;
+}
+
+//control the location of cursor
+
+ //generate error on invalid input
+void error()
+{
+    gotoxy(130,39);
+    cout<<"  -Invalid Input-   ";
+}
+//remove generated error when it's solved
+void ErrorCorrection()
+{
+	gotoxy(130,39);
+    cout<<"                    ";  
+}
+//show greeting at the end
+void end()
+{
+	system("cls");
+	system("color 70");
+	string greeting="Thanks For Visiting";
+	string *ptr=&greeting;
+	gotoxy(69,22);
+	cout<<*ptr;
+}
+//converts intger into string
+string IntToStr(int n)
+{
+    return to_string(n);
+}
+
